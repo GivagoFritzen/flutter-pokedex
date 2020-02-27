@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
             return CardPokemon(
               name: currentPokemon.name,
               id: currentPokemon.id,
-              image: currentPokemon.image,
+              image: currentPokemon.descriptionModel.image,
             );
           },
         ),

@@ -21,15 +21,16 @@ class PokemonService {
   Future<List<PokemonModel>> getListPokemon() async {
     final Response response = await dio.get('${baseUrl}pokemon');
     final data = response.data['results'];
+
     List<PokemonModel> listPokemonModel = [];
     data.forEach((pokemon) {
-      /*
-      pokemon['image'] =
-      PokemonModel _pokemonModel = PokemonModel.fromJson(pokemon);
-      */
-
-      listPokemonModel.add(new PokemonModel.fromJson(pokemon));
+      listPokemonModel.add(PokemonModel.fromJson(pokemon));
     });
+
+    listPokemonModel.forEach((pokemon) async {
+      pokemon.descriptionModel = await getPokemonDescription(pokemon.url);
+    });
+
     return listPokemonModel;
   }
 
