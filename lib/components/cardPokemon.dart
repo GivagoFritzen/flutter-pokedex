@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/models/descriptionModel.dart';
+import 'package:pokedex/models/pokemonModel.dart';
 
 class CardPokemon extends StatefulWidget {
-  String name, id, image;
+  PokemonModel pokemonModel;
 
-  CardPokemon({this.name, this.id, this.image}) : assert(name != null);
+  CardPokemon({this.pokemonModel}) : assert(pokemonModel != null);
 
   @override
   _CardPokemonState createState() => _CardPokemonState();
@@ -12,11 +14,16 @@ class CardPokemon extends StatefulWidget {
 class _CardPokemonState extends State<CardPokemon> {
   @override
   Widget build(BuildContext context) {
+    DescriptionModel descriptionModel = widget.pokemonModel.descriptionModel;
+
     return RawMaterialButton(
       onPressed: () => Navigator.pushNamed(
         context,
         '/pokemonPage',
-        arguments: {'id': 1, 'imageUrl': ''},
+        arguments: {
+          'descriptionModel': descriptionModel,
+          'name': widget.pokemonModel.name,
+        },
       ),
       child: Container(
         color: Colors.white,
@@ -28,13 +35,13 @@ class _CardPokemonState extends State<CardPokemon> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                child: Image.network(widget.image),
+                child: Image.network(descriptionModel.image),
                 height: 45,
                 width: 45,
               ),
               SizedBox(width: 13),
               Text(
-                widget.name,
+                widget.pokemonModel.name,
                 style: TextStyle(fontSize: 19),
               ),
               Spacer(),

@@ -95,11 +95,8 @@ class _HomePageState extends State<HomePage> {
         child: ListView.builder(
           itemCount: _pokemonList.length,
           itemBuilder: (BuildContext context, int index) {
-            PokemonModel currentPokemon = _pokemonList[index];
             return CardPokemon(
-              name: currentPokemon.name,
-              id: currentPokemon.id,
-              image: currentPokemon.descriptionModel.image,
+              pokemonModel: _pokemonList[index],
             );
           },
         ),
