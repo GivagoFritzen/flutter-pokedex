@@ -1,8 +1,10 @@
+import 'descriptionModel.dart';
+
 class PokemonModel {
   String name;
   String id;
   String url;
-  String image;
+  DescriptionModel descriptionModel;
 
   PokemonModel.fromJson(Map<String, dynamic> json) : assert(json != null) {
     name = json['name'];
@@ -10,7 +12,5 @@ class PokemonModel {
 
     String _id = url.replaceAll('https://pokeapi.co/api/v2/pokemon/', '');
     id = _id.replaceAll(_id.substring(_id.length - 1), '');
-
-    image = 'https://pokeres.bastionbot.org/images/pokemon/${id}.png';
   }
 }
