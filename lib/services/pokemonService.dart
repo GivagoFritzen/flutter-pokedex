@@ -23,13 +23,12 @@ class PokemonService {
     final data = response.data['results'];
 
     List<PokemonModel> listPokemonModel = [];
-    data.forEach((pokemon) {
-      listPokemonModel.add(PokemonModel.fromJson(pokemon));
-    });
-
-    listPokemonModel.forEach((pokemon) async {
-      pokemon.descriptionModel = await getPokemonDescription(pokemon.url);
-    });
+    for (var pokemon in data) {
+      PokemonModel _pokemonModel = PokemonModel.fromJson(pokemon);
+      _pokemonModel.descriptionModel =
+          await getPokemonDescription(_pokemonModel.url);
+      listPokemonModel.add(_pokemonModel);
+    }
 
     return listPokemonModel;
   }
