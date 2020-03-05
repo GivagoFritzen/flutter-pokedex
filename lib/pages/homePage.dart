@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/components/cardMove.dart';
-import 'package:pokedex/models/movesModel.dart';
+import 'package:pokedex/models/moveModel.dart';
 import 'package:pokedex/models/pokemonModel.dart';
 import 'package:pokedex/services/pokemonService.dart';
 import 'package:pokedex/components/mainAppBar.dart';
@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   final _pokemonService = PokemonService();
   int currentIndex = 1;
   List<PokemonModel> _pokemonList;
-  List<MovesModel> _movesList;
+  List<MoveModel> _movesList;
   bool isLoading = true;
 
   @override
@@ -75,11 +75,13 @@ class _HomePageState extends State<HomePage> {
         child: ListView.builder(
           itemCount: _movesList.length,
           itemBuilder: (BuildContext context, int index) {
-            MovesModel currentMove = _movesList[index];
+            MoveModel currentMove = _movesList[index];
             return CardMove(
+              accuracy: currentMove.accuracy,
               name: currentMove.name,
               type: currentMove.type,
-              learnLevel: currentMove.learnLevel,
+              pp: currentMove.pp,
+              power: currentMove.power,
             );
           },
         ),

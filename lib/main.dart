@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/pages/homePage.dart';
+import 'package:pokedex/pages/movePage.dart';
 import 'package:pokedex/pages/pokemonPage.dart';
 
 void main() => runApp(MyApp());
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/home': (context) => HomePage(),
+        '/movePage': (context) => MovePage(),
         '/pokemonPage': (context) => PokemonPage(),
       },
     );

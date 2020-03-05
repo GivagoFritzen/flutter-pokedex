@@ -1,5 +1,4 @@
 import 'dart:collection';
-
 import 'package:pokedex/models/pokemonStatusModel.dart';
 
 class DescriptionModel {

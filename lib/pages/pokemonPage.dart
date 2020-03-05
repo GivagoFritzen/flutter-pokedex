@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pokedex/components/cardType.dart';
 import 'package:pokedex/components/pokemonStatus.dart';
 import 'package:pokedex/models/descriptionModel.dart';
+import 'package:pokedex/utils/color.dart';
 
 class PokemonPage extends StatefulWidget {
-  int pokemonId;
-  Color backgroundColor;
-
-  PokemonPage({this.backgroundColor});
-
   @override
   _PokemonPageState createState() => _PokemonPageState();
 }
@@ -40,28 +36,6 @@ class _PokemonPageState extends State<PokemonPage> {
     });
   }
 
-  Color _getBackgroundColor() {
-    switch (_pokemonDescriptionModel.types.first) {
-      case 'bug':
-        return Colors.lightGreenAccent;
-      case 'eletric':
-        return Colors.yellow;
-      case 'fire':
-        return Colors.red;
-      case 'flying':
-        return Colors.lightBlueAccent;
-      case 'grass':
-        return Colors.green;
-      case 'normal':
-        return Colors.grey;
-      case 'poison':
-        return Colors.purpleAccent;
-      case 'water':
-      default:
-        return Colors.blue;
-    }
-  }
-
   Widget _getTypes() {
     return Padding(
       padding: EdgeInsets.only(top: 10),
@@ -80,19 +54,6 @@ class _PokemonPageState extends State<PokemonPage> {
             )
             .toList(),
       ),
-    );
-  }
-
-  Widget _getWidgetDescription() {
-    return Padding(
-      padding: EdgeInsets.only(top: 35),
-//      child: Container(
-//        child: Text(
-//          _pokemonDescriptionModel.description,
-//          textAlign: TextAlign.center,
-//        ),
-//        width: double.infinity,
-//      ),
     );
   }
 
@@ -147,9 +108,9 @@ class _PokemonPageState extends State<PokemonPage> {
                     style: TextStyle(fontSize: 24),
                   ),
                   _getTypes(),
-                  _getWidgetDescription(),
                   PokemonStatus(
-                    color: _getBackgroundColor(),
+                    color: ColorUtil.getColor(
+                        _pokemonDescriptionModel.types.first),
                     pokemonStatusModel:
                         _pokemonDescriptionModel.pokemonStatusModel,
                   ),
@@ -176,7 +137,7 @@ class _PokemonPageState extends State<PokemonPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _getBackgroundColor(),
+      backgroundColor: ColorUtil.getColor(_pokemonDescriptionModel.types.first),
       body: _wasLoading ? preLoader() : getBody(),
     );
   }
