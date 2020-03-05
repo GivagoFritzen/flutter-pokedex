@@ -4,11 +4,13 @@ import 'package:pokedex/components/mainBottomCard.dart';
 class MainBottomBar extends StatelessWidget {
   Function changePokemonList;
   Function changeMoveList;
+  Function changeItemList;
 
-  MainBottomBar({this.changePokemonList, this.changeMoveList})
-      : assert(
-          changeMoveList != null && changeMoveList != null,
-        );
+  MainBottomBar(
+      {this.changePokemonList, this.changeMoveList, this.changeItemList})
+      : assert(changeMoveList != null &&
+            changeMoveList != null &&
+            changeItemList != null);
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class MainBottomBar extends StatelessWidget {
           MainBottomCard(
             name: 'itens',
             imageName: 'itens',
+            function: changeItemList,
           ),
         ],
       ),

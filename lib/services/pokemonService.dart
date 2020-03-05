@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:pokedex/models/itemModel.dart';
 import 'package:pokedex/models/moveModel.dart';
 import 'package:pokedex/models/descriptionModel.dart';
 import 'package:pokedex/models/pokemonModel.dart';
@@ -9,6 +10,12 @@ class PokemonService {
 
   String getMoveIdFromUrl(String url) {
     String _id = url.replaceAll('${baseUrl}move/', '');
+    _id = _id.replaceAll(_id.substring(_id.length - 1), '');
+    return _id;
+  }
+
+  String getItemIdFromUrl(String url) {
+    String _id = url.replaceAll('${baseUrl}item/', '');
     _id = _id.replaceAll(_id.substring(_id.length - 1), '');
     return _id;
   }
@@ -40,6 +47,36 @@ class PokemonService {
 
   Future<dynamic> getMoveDetails(String id) async {
     final Response response = await dio.get('${baseUrl}move/${id}');
+    return response.data;
+  }
+
+  Future<List<ItemModel>> getListItems() async {
+    try {
+      final Response response = await dio.get('${baseUrl}item');
+      var data = response.data['results'];
+
+      List<ItemModel> listItemModel = [];
+      for (var item in data) {
+        ItemModel itemModel = ItemModel.fromJson(item);
+        String _id = getItemIdFromUrl(item['url']);
+
+        var itemDetail = await getItemDetails(_id);
+        itemModel.sprite = itemDetail['sprites']['default'];
+        itemModel.cost = itemDetail['cost'];
+
+        itemModel.description = itemDetail['effect_entries'][0]['effect'];
+
+        listItemModel.add(itemModel);
+      }
+
+      return listItemModel;
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<dynamic> getItemDetails(String id) async {
+    final Response response = await dio.get('${baseUrl}item/${id}');
     return response.data;
   }
 

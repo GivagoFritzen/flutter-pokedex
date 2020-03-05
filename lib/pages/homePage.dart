@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/components/cardMove.dart';
+import 'package:pokedex/models/itemModel.dart';
 import 'package:pokedex/models/moveModel.dart';
 import 'package:pokedex/models/pokemonModel.dart';
 import 'package:pokedex/services/pokemonService.dart';
 import 'package:pokedex/components/mainAppBar.dart';
 import 'package:pokedex/components/cardPokemon.dart';
 import 'package:pokedex/components/mainBottomBar.dart';
+import 'package:pokedex/utils/color.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,9 +17,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _pokemonService = PokemonService();
   int currentIndex = 1;
+  bool isLoading = true;
+
   List<PokemonModel> _pokemonList;
   List<MoveModel> _movesList;
-  bool isLoading = true;
+  List<ItemModel> _itemList;
 
   @override
   void initState() {
@@ -43,6 +47,15 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void getItems() async {
+    final json = await _pokemonService.getListItems();
+
+    setState(() {
+      _itemList = json;
+      isLoading = false;
+    });
+  }
+
   void changeList(int index) {
     if (index == 1) {
       if (_pokemonList == null) {
@@ -52,7 +65,11 @@ class _HomePageState extends State<HomePage> {
       if (_movesList == null) {
         getMoves();
       }
-    } else {}
+    } else {
+      if (_itemList == null) {
+        getItems();
+      }
+    }
 
     setState(() {
       currentIndex = index;
@@ -110,27 +127,16 @@ class _HomePageState extends State<HomePage> {
 
   Widget getHome() {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          stops: [0.0138, 0.2798, 0.5905, 0.8726],
-          colors: [
-            Color(0xff6E95FD),
-            Color(0xff6FDEFA),
-            Color(0xff8DE061),
-            Color(0xff51E85E),
-          ],
-        ),
-      ),
+      decoration: BoxDecoration(gradient: ColorUtil.getBackgroundColorHome()),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           MainAppBar(),
           getList(),
           MainBottomBar(
-            changeMoveList: () => changeList(2),
             changePokemonList: () => changeList(1),
+            changeMoveList: () => changeList(2),
+            changeItemList: () => changeList(3),
           ),
         ],
       ),

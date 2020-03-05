@@ -42,4 +42,18 @@ class ColorUtil {
         return Color(0xffA3A49E);
     }
   }
+
+  static LinearGradient getBackgroundColorHome() {
+    return LinearGradient(
+      begin: Alignment.topRight,
+      end: Alignment.bottomLeft,
+      stops: [0.0138, 0.2798, 0.5905, 0.8726],
+      colors: [
+        Color(0xff6E95FD),
+        Color(0xff6FDEFA),
+        Color(0xff8DE061),
+        Color(0xff51E85E),
+      ],
+    );
+  }
 }

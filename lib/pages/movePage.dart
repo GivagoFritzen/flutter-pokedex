@@ -47,49 +47,41 @@ class _MovePageState extends State<MovePage> {
     );
   }
 
+  Widget _getTitleTable(String text) {
+    return Text(
+      text,
+      textAlign: TextAlign.center,
+      style: TextStyle(color: ColorUtil.getColor(type), fontSize: 15),
+    );
+  }
+
+  Widget _getTextTable(String text) {
+    return Text(
+      text,
+      textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 19),
+    );
+  }
+
   Widget _getPowerInfo() {
-    if (accuracy == null || power == null || pp == null) {
-      return Container();
-    } else {
-      return Table(
-        children: [
-          TableRow(children: [
-            Text(
-              'Base Power',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: ColorUtil.getColor(type), fontSize: 15),
-            ),
-            Text(
-              'Accuracy',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: ColorUtil.getColor(type), fontSize: 15),
-            ),
-            Text(
-              'PP',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: ColorUtil.getColor(type), fontSize: 15),
-            ),
-          ]),
-          TableRow(children: [
-            Text(
-              power.toString(),
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 19),
-            ),
-            Text(
-              accuracy.toString(),
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 19),
-            ),
-            Text(
-              pp.toString(),
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 19),
-            ),
-          ])
-        ],
-      );
-    }
+    return Table(
+      children: [
+        TableRow(
+          children: [
+            power != null ? _getTitleTable('Base Power') : null,
+            accuracy != null ? _getTitleTable('Accuracy') : null,
+            pp != null ? _getTitleTable('PP') : null,
+          ].where((child) => child != null).toList(),
+        ),
+        TableRow(
+          children: [
+            power != null ? _getTextTable(power.toString()) : null,
+            accuracy != null ? _getTextTable(accuracy.toString()) : null,
+            pp != null ? _getTextTable(pp.toString()) : null,
+          ].where((child) => child != null).toList(),
+        )
+      ].where((child) => child != null).toList(),
+    );
   }
 
   Widget getBody() {
