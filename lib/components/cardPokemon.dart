@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/models/descriptionModel.dart';
 import 'package:pokedex/models/pokemonModel.dart';
+import 'package:pokedex/utils/string.dart';
 
 class CardPokemon extends StatefulWidget {
   PokemonModel pokemonModel;
@@ -22,7 +23,8 @@ class _CardPokemonState extends State<CardPokemon> {
         '/pokemonPage',
         arguments: {
           'descriptionModel': descriptionModel,
-          'name': widget.pokemonModel.name,
+          'name': StringUtil.UppercaseFirstLetterOfEachWord(
+              widget.pokemonModel.name),
         },
       ),
       child: Container(
@@ -41,7 +43,8 @@ class _CardPokemonState extends State<CardPokemon> {
               ),
               SizedBox(width: 13),
               Text(
-                widget.pokemonModel.name,
+                StringUtil.UppercaseFirstLetterOfEachWord(
+                    widget.pokemonModel.name),
                 style: TextStyle(fontSize: 19),
               ),
               Spacer(),

@@ -4,8 +4,9 @@ class MainBottomCard extends StatelessWidget {
   String name;
   String imageName;
   Function function;
+  bool isActived;
 
-  MainBottomCard({this.name, this.imageName, this.function})
+  MainBottomCard({this.name, this.imageName, this.function, this.isActived})
       : assert(name != null && imageName != null);
 
   @override
@@ -18,6 +19,7 @@ class MainBottomCard extends StatelessWidget {
           children: <Widget>[
             ImageIcon(
               AssetImage('assets/buttons/$imageName.png'),
+              color: isActived ? Colors.black : Colors.grey,
             ),
             Text(name),
           ],

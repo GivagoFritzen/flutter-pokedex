@@ -5,12 +5,17 @@ class MainBottomBar extends StatelessWidget {
   Function changePokemonList;
   Function changeMoveList;
   Function changeItemList;
+  int currentId = 1;
 
   MainBottomBar(
-      {this.changePokemonList, this.changeMoveList, this.changeItemList})
+      {this.changePokemonList,
+      this.changeMoveList,
+      this.changeItemList,
+      this.currentId})
       : assert(changeMoveList != null &&
             changeMoveList != null &&
-            changeItemList != null);
+            changeItemList != null &&
+            currentId != null);
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +29,19 @@ class MainBottomBar extends StatelessWidget {
             name: 'Pokemon',
             imageName: 'pokemons',
             function: changePokemonList,
+            isActived: currentId == 1,
           ),
           MainBottomCard(
             name: 'Moves',
             imageName: 'moves',
             function: changeMoveList,
+            isActived: currentId == 2,
           ),
           MainBottomCard(
             name: 'itens',
             imageName: 'itens',
             function: changeItemList,
+            isActived: currentId == 3,
           ),
         ],
       ),

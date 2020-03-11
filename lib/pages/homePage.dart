@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/components/cardItem.dart';
 import 'package:pokedex/components/cardMove.dart';
 import 'package:pokedex/models/itemModel.dart';
 import 'package:pokedex/models/moveModel.dart';
@@ -8,6 +9,7 @@ import 'package:pokedex/components/mainAppBar.dart';
 import 'package:pokedex/components/cardPokemon.dart';
 import 'package:pokedex/components/mainBottomBar.dart';
 import 'package:pokedex/utils/color.dart';
+import 'package:pokedex/utils/string.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -22,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   List<PokemonModel> _pokemonList;
   List<MoveModel> _movesList;
   List<ItemModel> _itemList;
+  int currentMenuSelected = 1;
 
   @override
   void initState() {
@@ -57,6 +60,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void changeList(int index) {
+    currentMenuSelected = index;
+
     if (index == 1) {
       if (_pokemonList == null) {
         getPokemons();
@@ -82,29 +87,7 @@ class _HomePageState extends State<HomePage> {
     } else if (currentIndex == 2) {
       return getWidgetsMoveList();
     } else {
-      return Container();
-    }
-  }
-
-  Widget getWidgetsMoveList() {
-    if (_movesList != null && _movesList.length > 0) {
-      return Expanded(
-        child: ListView.builder(
-          itemCount: _movesList.length,
-          itemBuilder: (BuildContext context, int index) {
-            MoveModel currentMove = _movesList[index];
-            return CardMove(
-              accuracy: currentMove.accuracy,
-              name: currentMove.name,
-              type: currentMove.type,
-              pp: currentMove.pp,
-              power: currentMove.power,
-            );
-          },
-        ),
-      );
-    } else {
-      return Container();
+      return getWidgetsItemList();
     }
   }
 
@@ -125,6 +108,49 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Widget getWidgetsMoveList() {
+    if (_movesList != null && _movesList.length > 0) {
+      return Expanded(
+        child: ListView.builder(
+          itemCount: _movesList.length,
+          itemBuilder: (BuildContext context, int index) {
+            MoveModel currentMove = _movesList[index];
+            return CardMove(
+              accuracy: currentMove.accuracy,
+              name: StringUtil.UppercaseFirstLetterOfEachWord(currentMove.name),
+              type: currentMove.type,
+              pp: currentMove.pp,
+              power: currentMove.power,
+            );
+          },
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+  Widget getWidgetsItemList() {
+    if (_itemList != null && _itemList.length > 0) {
+      return Expanded(
+        child: ListView.builder(
+          itemCount: _itemList.length,
+          itemBuilder: (BuildContext context, int index) {
+            ItemModel currentitem = _itemList[index];
+            return CardItem(
+                name:
+                    StringUtil.UppercaseFirstLetterOfEachWord(currentitem.name),
+                description: currentitem.description,
+                sprite: currentitem.sprite,
+                cost: currentitem.cost);
+          },
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
   Widget getHome() {
     return Container(
       decoration: BoxDecoration(gradient: ColorUtil.getBackgroundColorHome()),
@@ -134,6 +160,7 @@ class _HomePageState extends State<HomePage> {
           MainAppBar(),
           getList(),
           MainBottomBar(
+            currentId: currentMenuSelected,
             changePokemonList: () => changeList(1),
             changeMoveList: () => changeList(2),
             changeItemList: () => changeList(3),
