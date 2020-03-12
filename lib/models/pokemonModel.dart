@@ -10,7 +10,12 @@ class PokemonModel {
     name = json['name'];
     url = json['url'] as String;
 
-    String _id = url.replaceAll('https://pokeapi.co/api/v2/pokemon/', '');
-    id = _id.replaceAll(_id.substring(_id.length - 1), '');
+    if (json['id'] != null) {
+      id = json['id'].toString();
+      url = 'https://pokeapi.co/api/v2/pokemon/${id}';
+    } else {
+      String _id = url.replaceAll('https://pokeapi.co/api/v2/pokemon/', '');
+      id = _id.replaceAll(_id.substring(_id.length - 1), '');
+    }
   }
 }

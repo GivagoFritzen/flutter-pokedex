@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MainAppBar extends StatefulWidget {
+  Function filterByName;
+
+  MainAppBar({this.filterByName}) : assert(filterByName != null);
+
   @override
   _MainAppBarState createState() => _MainAppBarState();
 }
@@ -18,6 +22,9 @@ class _MainAppBarState extends State<MainAppBar> {
               Text('Pokemon', style: TextStyle(fontSize: 20)),
               SizedBox(height: 15),
               TextField(
+                onChanged: (String text) {
+                  widget.filterByName(text);
+                },
                 decoration: InputDecoration(
                   prefixIcon: Icon(Icons.search),
                   suffixIcon: Icon(Icons.mic),

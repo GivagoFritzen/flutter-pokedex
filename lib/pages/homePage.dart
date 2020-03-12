@@ -4,6 +4,8 @@ import 'package:pokedex/components/cardMove.dart';
 import 'package:pokedex/models/itemModel.dart';
 import 'package:pokedex/models/moveModel.dart';
 import 'package:pokedex/models/pokemonModel.dart';
+import 'package:pokedex/services/itemService.dart';
+import 'package:pokedex/services/moveService.dart';
 import 'package:pokedex/services/pokemonService.dart';
 import 'package:pokedex/components/mainAppBar.dart';
 import 'package:pokedex/components/cardPokemon.dart';
@@ -18,6 +20,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _pokemonService = PokemonService();
+  final _moveService = MoveService();
+  final _itemService = ItemService();
+
   int currentIndex = 1;
   bool isLoading = true;
 
@@ -32,7 +37,35 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+  void getFilterByName(String findBy) async {
+    isLoading = true;
+
+    if (currentIndex == 1) {
+      getPokemonByName(findBy);
+    } else if (currentIndex == 2) {
+    } else {}
+  }
+
+  void getPokemonByName(String findBy) async {
+    if (findBy != '') {
+      getPokemons();
+    } else {
+      List<PokemonModel> _pokemon = new List<PokemonModel>();
+
+      PokemonModel _pokemonModel =
+          await _pokemonService.getPokemonByName(findBy);
+      if (_pokemonModel != null) _pokemon.add(_pokemonModel);
+
+      _pokemonList.clear();
+      setState(() {
+        _pokemonList = _pokemon;
+        isLoading = false;
+      });
+    }
+  }
+
   void getPokemons() async {
+    isLoading = true;
     final json = await _pokemonService.getListPokemon();
 
     setState(() {
@@ -42,7 +75,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getMoves() async {
-    final json = await _pokemonService.getListMoves();
+    isLoading = true;
+    final json = await _moveService.getListMoves();
 
     setState(() {
       _movesList = json;
@@ -51,7 +85,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   void getItems() async {
-    final json = await _pokemonService.getListItems();
+    isLoading = true;
+    final json = await _itemService.getListItems();
 
     setState(() {
       _itemList = json;
@@ -157,7 +192,7 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          MainAppBar(),
+          MainAppBar(filterByName: getFilterByName),
           getList(),
           MainBottomBar(
             currentId: currentMenuSelected,
