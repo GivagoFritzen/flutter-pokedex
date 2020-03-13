@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/components/cardItem.dart';
 import 'package:pokedex/components/cardMove.dart';
+import 'package:pokedex/components/loading.dart';
 import 'package:pokedex/models/itemModel.dart';
 import 'package:pokedex/models/moveModel.dart';
 import 'package:pokedex/models/pokemonModel.dart';
@@ -43,11 +44,12 @@ class _HomePageState extends State<HomePage> {
     if (currentIndex == 1) {
       getPokemonByName(findBy);
     } else if (currentIndex == 2) {
+      getMoveByName(findBy);
     } else {}
   }
 
   void getPokemonByName(String findBy) async {
-    if (findBy != '') {
+    if (findBy == '') {
       getPokemons();
     } else {
       List<PokemonModel> _pokemon = new List<PokemonModel>();
@@ -59,6 +61,23 @@ class _HomePageState extends State<HomePage> {
       _pokemonList.clear();
       setState(() {
         _pokemonList = _pokemon;
+        isLoading = false;
+      });
+    }
+  }
+
+  void getMoveByName(String findBy) async {
+    if (findBy == '') {
+      getMoves();
+    } else {
+      List<MoveModel> _moves = new List<MoveModel>();
+
+      MoveModel _moveModel = await _moveService.getMoveByName(findBy);
+      if (_moveModel != null) _moves.add(_moveModel);
+
+      _movesList.clear();
+      setState(() {
+        _moves = _moves;
         isLoading = false;
       });
     }
@@ -193,7 +212,7 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           MainAppBar(filterByName: getFilterByName),
-          getList(),
+          isLoading ? Loading() : getList(),
           MainBottomBar(
             currentId: currentMenuSelected,
             changePokemonList: () => changeList(1),
@@ -207,6 +226,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: isLoading ? Container() : getHome());
+    return Scaffold(body: getHome());
   }
 }

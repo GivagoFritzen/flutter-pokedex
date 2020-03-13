@@ -11,6 +11,18 @@ class MoveService {
     return _id;
   }
 
+  Future<MoveModel> getMoveByName(String name) async {
+    try {
+      final Response response = await dio.get('${baseUrl}move/${name}');
+
+      MoveModel _moveModel = MoveModel.fromJson(response.data);
+
+      return _moveModel;
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<List<MoveModel>> getListMoves() async {
     try {
       final Response response = await dio.get('${baseUrl}move');
