@@ -11,12 +11,30 @@ class ItemService {
     return _id;
   }
 
+  Future<ItemModel> getItemByName(String name) async {
+    ItemModel _itemModel;
+
+    try {
+      final Response response = await dio.get('${baseUrl}item/${name}');
+
+      _itemModel = ItemModel.fromJson(response.data);
+      _itemModel.sprite = response.data['sprites']['default'];
+      _itemModel.cost = response.data['cost'];
+      _itemModel.description = response.data['effect_entries'][0]['effect'];
+    } catch (e) {
+      return null;
+    }
+
+    return _itemModel;
+  }
+
   Future<List<ItemModel>> getListItems() async {
+    List<ItemModel> listItemModel = [];
+
     try {
       final Response response = await dio.get('${baseUrl}item');
       var data = response.data['results'];
 
-      List<ItemModel> listItemModel = [];
       for (var item in data) {
         ItemModel itemModel = ItemModel.fromJson(item);
         String _id = getItemIdFromUrl(item['url']);
@@ -29,11 +47,11 @@ class ItemService {
 
         listItemModel.add(itemModel);
       }
-
-      return listItemModel;
     } catch (e) {
       print(e);
     }
+
+    return listItemModel;
   }
 
   Future<dynamic> getItemDetails(String id) async {

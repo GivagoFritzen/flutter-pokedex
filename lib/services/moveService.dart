@@ -16,6 +16,7 @@ class MoveService {
       final Response response = await dio.get('${baseUrl}move/${name}');
 
       MoveModel _moveModel = MoveModel.fromJson(response.data);
+      setMoveDetails(response.data, _moveModel);
 
       return _moveModel;
     } catch (e) {
@@ -24,28 +25,33 @@ class MoveService {
   }
 
   Future<List<MoveModel>> getListMoves() async {
+    List<MoveModel> listMovesModel = [];
+
     try {
       final Response response = await dio.get('${baseUrl}move');
       var data = response.data['results'];
 
-      List<MoveModel> listMovesModel = [];
       for (var move in data) {
         MoveModel _movePokemon = MoveModel.fromJson(move);
         String _id = getMoveIdFromUrl(move['url']);
 
         var moveDetails = await getMoveDetails(_id);
-        _movePokemon.accuracy = moveDetails['accuracy'];
-        _movePokemon.power = moveDetails['power'];
-        _movePokemon.pp = moveDetails['pp'];
-        _movePokemon.type = moveDetails['type']['name'];
+        setMoveDetails(moveDetails, _movePokemon);
 
         listMovesModel.add(_movePokemon);
       }
-
-      return listMovesModel;
     } catch (e) {
       print(e);
     }
+
+    return listMovesModel;
+  }
+
+  MoveModel setMoveDetails(Map<String, dynamic> json, MoveModel movePokemon) {
+    movePokemon.accuracy = json['accuracy'];
+    movePokemon.power = json['power'];
+    movePokemon.pp = json['pp'];
+    movePokemon.type = json['type']['name'];
   }
 
   Future<dynamic> getMoveDetails(String id) async {

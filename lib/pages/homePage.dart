@@ -45,7 +45,9 @@ class _HomePageState extends State<HomePage> {
       getPokemonByName(findBy);
     } else if (currentIndex == 2) {
       getMoveByName(findBy);
-    } else {}
+    } else {
+      getItemByName(findBy);
+    }
   }
 
   void getPokemonByName(String findBy) async {
@@ -77,7 +79,24 @@ class _HomePageState extends State<HomePage> {
 
       _movesList.clear();
       setState(() {
-        _moves = _moves;
+        _movesList = _moves;
+        isLoading = false;
+      });
+    }
+  }
+
+  void getItemByName(String findBy) async {
+    if (findBy == '') {
+      getItems();
+    } else {
+      List<ItemModel> _items = new List<ItemModel>();
+
+      ItemModel _itemsModel = await _itemService.getItemByName(findBy);
+      if (_itemsModel != null) _items.add(_itemsModel);
+
+      _itemList.clear();
+      setState(() {
+        _itemList = _items;
         isLoading = false;
       });
     }
