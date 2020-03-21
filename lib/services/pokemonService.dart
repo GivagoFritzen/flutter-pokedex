@@ -8,7 +8,7 @@ class PokemonService {
 
   Future<PokemonModel> getPokemonByName(String name) async {
     try {
-      final Response response = await dio.get('${baseUrl}pokemon/${name}');
+      final Response response = await dio.get('${baseUrl}pokemon/${name.toLowerCase()}');
 
       PokemonModel _pokemonModel = PokemonModel.fromJson(response.data);
       _pokemonModel.descriptionModel = DescriptionModel.fromJson(response.data);

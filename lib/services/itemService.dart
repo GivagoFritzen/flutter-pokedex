@@ -15,7 +15,7 @@ class ItemService {
     ItemModel _itemModel;
 
     try {
-      final Response response = await dio.get('${baseUrl}item/${name}');
+      final Response response = await dio.get('${baseUrl}item/${name.toLowerCase()}');
 
       _itemModel = ItemModel.fromJson(response.data);
       _itemModel.sprite = response.data['sprites']['default'];

@@ -13,7 +13,7 @@ class MoveService {
 
   Future<MoveModel> getMoveByName(String name) async {
     try {
-      final Response response = await dio.get('${baseUrl}move/${name}');
+      final Response response = await dio.get('${baseUrl}move/${name.toLowerCase()}');
 
       MoveModel _moveModel = MoveModel.fromJson(response.data);
       setMoveDetails(response.data, _moveModel);
