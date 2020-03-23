@@ -1,16 +1,16 @@
-# pokedex
+# Flutter Pokedex
 
-A new Flutter application.
+Uma versão simplificada de pokedex, utilizando a Api https://pokeapi.co/
 
-## Getting Started
+Também foi utilizados os plugins:
+* [Dio 3.0.8](https://pub.dev/packages/dio)
+* [Speech Recognition 0.3.0+1](https://pub.dev/packages/speech_recognition)
+* [Permission Handler 4.2.0](https://pub.dev/packages/permission_handler)
 
-This project is a starting point for a Flutter application.
+## Authors
 
-A few resources to get you started if this is your first Flutter project:
+* **Givago Fritzen**
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## License
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This project is licensed under the MIT License
