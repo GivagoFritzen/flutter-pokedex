@@ -24,11 +24,11 @@ class MoveService {
     }
   }
 
-  Future<List<MoveModel>> getListMoves() async {
+  Future<List<MoveModel>> getListMoves(int offset) async {
     List<MoveModel> listMovesModel = [];
 
     try {
-      final Response response = await dio.get('${baseUrl}move');
+      final Response response = await dio.get('${baseUrl}move/?offset=${offset}&limit=20');
       var data = response.data['results'];
 
       for (var move in data) {

@@ -27,6 +27,10 @@ class _HomePageState extends State<HomePage> {
   int currentIndex = 1;
   bool isLoading = true;
 
+  ScrollController _pokemonScrollController = new ScrollController();
+  ScrollController _moveScrollController = new ScrollController();
+  ScrollController _itemScrollController = new ScrollController();
+
   List<PokemonModel> _pokemonList;
   List<MoveModel> _movesList;
   List<ItemModel> _itemList;
@@ -36,6 +40,35 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     getPokemons();
     super.initState();
+
+    _pokemonScrollController.addListener(() {
+      if (_pokemonScrollController.position.pixels ==
+          _pokemonScrollController.position.maxScrollExtent) {
+        getPokemons();
+      }
+    });
+
+    _moveScrollController.addListener(() {
+      if (_moveScrollController.position.pixels ==
+          _moveScrollController.position.maxScrollExtent) {
+        getMoves();
+      }
+    });
+
+    _itemScrollController.addListener(() {
+      if (_itemScrollController.position.pixels ==
+          _itemScrollController.position.maxScrollExtent) {
+        getItems();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _pokemonScrollController.dispose();
+    _moveScrollController.dispose();
+    _itemScrollController.dispose();
+    super.dispose();
   }
 
   void getFilterByName(String findBy) async {
@@ -104,30 +137,45 @@ class _HomePageState extends State<HomePage> {
 
   void getPokemons() async {
     isLoading = true;
-    final json = await _pokemonService.getListPokemon();
+    int sizeList = _pokemonList != null ? _pokemonList.length : 0;
+    final json = await _pokemonService.getListPokemon(sizeList);
 
     setState(() {
-      _pokemonList = json;
+      if (_pokemonList == null)
+        _pokemonList = json;
+      else
+        _pokemonList += json;
+
       isLoading = false;
     });
   }
 
   void getMoves() async {
     isLoading = true;
-    final json = await _moveService.getListMoves();
+    int sizeList = _movesList != null ? _movesList.length : 0;
+    final json = await _moveService.getListMoves(sizeList);
 
     setState(() {
-      _movesList = json;
+      if (_movesList == null)
+        _movesList = json;
+      else
+        _movesList += json;
+
       isLoading = false;
     });
   }
 
   void getItems() async {
     isLoading = true;
-    final json = await _itemService.getListItems();
+    int sizeList = _itemList != null ? _itemList.length : 0;
+    final json = await _itemService.getListItems(sizeList);
 
     setState(() {
-      _itemList = json;
+      if (_itemList == null)
+        _itemList = json;
+      else
+        _itemList += json;
+
       isLoading = false;
     });
   }
@@ -168,6 +216,7 @@ class _HomePageState extends State<HomePage> {
     if (_pokemonList != null && _pokemonList.length > 0) {
       return Expanded(
         child: ListView.builder(
+          controller: _pokemonScrollController,
           itemCount: _pokemonList.length,
           itemBuilder: (BuildContext context, int index) {
             return CardPokemon(
@@ -185,6 +234,7 @@ class _HomePageState extends State<HomePage> {
     if (_movesList != null && _movesList.length > 0) {
       return Expanded(
         child: ListView.builder(
+          controller: _moveScrollController,
           itemCount: _movesList.length,
           itemBuilder: (BuildContext context, int index) {
             MoveModel currentMove = _movesList[index];
@@ -207,6 +257,7 @@ class _HomePageState extends State<HomePage> {
     if (_itemList != null && _itemList.length > 0) {
       return Expanded(
         child: ListView.builder(
+          controller: _itemScrollController,
           itemCount: _itemList.length,
           itemBuilder: (BuildContext context, int index) {
             ItemModel currentitem = _itemList[index];

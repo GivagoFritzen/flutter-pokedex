@@ -19,8 +19,8 @@ class PokemonService {
     }
   }
 
-  Future<List<PokemonModel>> getListPokemon() async {
-    final Response response = await dio.get('${baseUrl}pokemon');
+  Future<List<PokemonModel>> getListPokemon(int offset) async {
+    final Response response = await dio.get('${baseUrl}pokemon/?offset=${offset}&limit=20');
     final data = response.data['results'];
 
     List<PokemonModel> listPokemonModel = [];

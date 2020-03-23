@@ -28,11 +28,11 @@ class ItemService {
     return _itemModel;
   }
 
-  Future<List<ItemModel>> getListItems() async {
+  Future<List<ItemModel>> getListItems(int offset) async {
     List<ItemModel> listItemModel = [];
 
     try {
-      final Response response = await dio.get('${baseUrl}item');
+      final Response response = await dio.get('${baseUrl}item/?offset=${offset}&limit=20');
       var data = response.data['results'];
 
       for (var item in data) {
